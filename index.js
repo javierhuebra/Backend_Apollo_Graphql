@@ -19,16 +19,17 @@ const server = new ApolloServer({
 
     //Guardando el token en el context cuando se inicia sesion
     context: ({req}) => {
+        /* console.log(req.headers['authorization']) */
         const token = req.headers['authorization'] || ''
         if(token){
             try{
-                const usuario = jwt.verify(token, process.env.SECRETA)
-
+                const usuario = jwt.verify(token.replace('Bearer ', ''), process.env.SECRETA)
+                console.log(usuario)
                 return{
                     usuario
                 }
             }catch(error){
-
+                console.log(error)
             }
         }
     }
